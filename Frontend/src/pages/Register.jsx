@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 import api from "../services/api";
 import "../styles/auth.css";
@@ -22,7 +21,6 @@ const Register = () => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({
-
       ...prev,
       [name]: value,
     }));
@@ -49,8 +47,8 @@ const Register = () => {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters.");
       return;
     }
 
@@ -84,12 +82,9 @@ const Register = () => {
   return (
     <div className="auth-page">
       <div className="auth-card">
-
         <h1>Create Account</h1>
 
-        <p className="auth-subtitle">
-          Create your Task Management account
-        </p>
+        <p className="auth-subtitle">Create your Task Management account</p>
 
         {error && <div className="auth-error">{error}</div>}
 
@@ -135,11 +130,7 @@ const Register = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="auth-button"
-            disabled={loading}
-          >
+          <button type="submit" className="auth-button" disabled={loading}>
             {loading ? "Creating Account..." : "Register"}
           </button>
         </form>
@@ -147,7 +138,6 @@ const Register = () => {
         <p className="auth-footer">
           Already have an account?
           <Link to="/login">Login</Link>
-
         </p>
       </div>
     </div>
