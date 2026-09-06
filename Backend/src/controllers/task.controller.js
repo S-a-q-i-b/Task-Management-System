@@ -181,7 +181,6 @@ const updateTask = async (req, res) => {
         message: "No valid fields provided for update.",
       });
     }
-
     const task = await Task.findOneAndUpdate(
       {
         _id: id,
@@ -189,11 +188,10 @@ const updateTask = async (req, res) => {
       },
       updates,
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       },
     );
-
     if (!task) {
       return res.status(404).json({
         success: false,
