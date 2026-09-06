@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import "../styles/auth.css";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -55,19 +56,23 @@ const Register = () => {
     try {
       setLoading(true);
 
-      const response = await api.post("/auth/register", formData);
+      const response = await register(
+        formData.name,
+        formData.email,
+        formData.password,
+      );
 
-      setSuccess(response.data.message);
+      if (response.success) {
+        setSuccess(response.message);
 
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-      });
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+        });
 
-      setTimeout(() => {
         navigate("/dashboard");
-      }, 1000);
+      }
     } catch (error) {
       const message =
         error.response?.data?.message ||
@@ -101,6 +106,7 @@ const Register = () => {
               value={formData.name}
               onChange={handleChange}
               placeholder="Enter your name"
+              disabled={loading}
             />
           </div>
 
@@ -114,6 +120,7 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
+              disabled={loading}
             />
           </div>
 
@@ -127,6 +134,7 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
+              disabled={loading}
             />
           </div>
 

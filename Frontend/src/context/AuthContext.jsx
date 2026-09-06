@@ -7,11 +7,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Get currently logged-in user
   const getCurrentUser = async () => {
     try {
       const response = await api.get("/auth/me");
 
-      setUser(response.data.user);
+      if (response.data.success) {
+        setUser(response.data.user);
+      } else {
+        setUser(null);
+      }
     } catch (error) {
       setUser(null);
     } finally {
@@ -29,7 +34,23 @@ export const AuthProvider = ({ children }) => {
       password,
     });
 
-    setUser(response.data.user);
+    if (response.data.success) {
+      setUser(response.data.user);
+    }
+
+    return response.data;
+  };
+
+  const register = async (name, email, password) => {
+    const response = await api.post("/auth/register", {
+      name,
+      email,
+      password,
+    });
+
+    if (response.data.success) {
+      setUser(response.data.user);
+    }
 
     return response.data;
   };
@@ -48,6 +69,7 @@ export const AuthProvider = ({ children }) => {
         user,
         loading,
         login,
+        register,
         logout,
         getCurrentUser,
       }}
