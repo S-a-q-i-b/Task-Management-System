@@ -9,7 +9,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://task-management-system-jhee.vercel.app",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   }),
 );
